@@ -70,12 +70,12 @@ class _OptionCardState extends State<OptionCard> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 18),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.03),
+                    color: Colors.white.withAlpha(100),
                     borderRadius: BorderRadius.circular(24),
-                    border: Border.all(color: Colors.white.withOpacity(0.06)),
+                    border: Border.all(color: Colors.white.withAlpha(100)),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(_hover ? 0.45 : 0.28),
+                        color: Colors.black.withAlpha(_hover ? 100 : 60),
                         blurRadius: _hover ? 20 : 12,
                         offset: const Offset(0, 8),
                       ),
@@ -96,7 +96,7 @@ class _OptionCardState extends State<OptionCard> {
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.cyanAccent.withOpacity(0.12),
+                              color: Colors.cyanAccent.withAlpha(100),
                               blurRadius: 12,
                               offset: const Offset(0, 6),
                             )
@@ -112,18 +112,18 @@ class _OptionCardState extends State<OptionCard> {
                           children: [
                             Text(
                               widget.title,
-                              style: GoogleFonts.poppins(
+                              style: GoogleFonts.abel(
                                 color: Colors.white,
-                                fontSize: 20,
+                                fontSize: 22,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
                             const SizedBox(height: 6),
                             Text(
                               widget.subtitle,
-                              style: GoogleFonts.poppins(
+                              style: GoogleFonts.abel(
                                 color: Colors.white70,
-                                fontSize: 14,
+                                fontSize: 17,
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
