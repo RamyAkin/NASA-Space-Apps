@@ -68,6 +68,19 @@ Notes and tips
 - If you see CORS issues when the Flutter app tries to call the backend, ensure the Node server is started with CORS enabled (the code already uses `cors()` by default).
 - For production builds of the frontend, run `flutter build web --release` and serve the files from `build/web` using the Node server or any static host.
 
+### AI prediction input format
+
+Important: the AI model expects numeric values in exponential notation (as numbers, not strings) in this exact format. When calling the prediction endpoint, send JSON with numeric literals like:
+
+```json
+"period": 8.6893015e+00,
+"duration": 2.5630000e+00,
+"depth": 1.1170000e+03,
+"ror": 2.9843001e-02
+```
+
+If values are sent as free-form strings or in a different numeric format the model may fail to parse them or produce incorrect results.
+
 ## 🔧 **Tech Stack**
 
 - **Frontend**: Flutter Web

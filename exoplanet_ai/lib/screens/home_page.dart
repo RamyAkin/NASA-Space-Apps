@@ -244,9 +244,10 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                               ),
                             ],
                           ),
-                          child: ClipOval(
-                            child: Image.asset(
-                              planets[i]['image']!,
+                          child: (() {
+                            final imgPath = planets[i]['image']!;
+                            Widget imageWidget = Image.asset(
+                              imgPath,
                               fit: BoxFit.cover,
                               errorBuilder: (context, error, stackTrace) {
                                 return Container(
@@ -263,8 +264,26 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                                   ),
                                 );
                               },
-                            ),
-                          ),
+                            );
+
+                            // Two assets had visible outline artifacts on the edges.
+                            // For those, add a thin circular padding and a matching dark
+                            // circular background to mask any stray pixels and improve
+                            // the circular clipping when scaled.
+                            if (imgPath.endsWith('exoplanet1.png') || imgPath.endsWith('exoplanet5.png')) {
+                              return Container(
+                                // inner circular background that matches app darkness
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.black,
+                                ),
+                                padding: const EdgeInsets.all(3),
+                                child: ClipOval(child: imageWidget),
+                              );
+                            }
+
+                            return ClipOval(child: imageWidget);
+                          })(),
                         ),
                       ),
                     ),

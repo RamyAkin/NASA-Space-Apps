@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -276,10 +277,13 @@ class _AddOrTestPageState extends State<AddOrTestPage> {
 
   // raw string values logged in debug during development (removed prints for production)
 
-      // Call AI API
-      const String _aiApiBase = String.fromEnvironment('API_AI_BASE', defaultValue: 'https://nasaserver.onrender.com');
-      final response = await http.post(
-        Uri.parse('$_aiApiBase/ai/predict'),
+      // Call AI API - always use the external prediction API directly.
+      // No local proxy fallback per project decision.
+      const String aiApiBase = 'https://exoplanetapi.onrender.com';
+      final uri = Uri.parse('$aiApiBase/api/predict');
+      final response = await http
+          .post(
+        uri,
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -290,9 +294,9 @@ class _AddOrTestPageState extends State<AddOrTestPage> {
           'depth': depth,
           'ror': ror,
         }),
-      );
+      ).timeout(const Duration(seconds: 15));
 
-        if (response.statusCode == 200) {
+      if (response.statusCode == 200) {
         final result = jsonDecode(response.body);
         final prediction = result['prediction'];
         final confidence = result['confidence'];
@@ -315,9 +319,32 @@ class _AddOrTestPageState extends State<AddOrTestPage> {
           }
         });
       } else {
-        throw Exception('API Error: ${response.statusCode}');
+        // Include response body for easier debugging
+        throw Exception('API Error ${response.statusCode}: ${response.body}');
       }
     } catch (e) {
+      if (e is TimeoutException) {
+        if (mounted) {
+          setState(() {
+            _predictionResult = '❌ Error: Request timed out (network/server may be slow)';
+          });
+        }
+        return;
+      }
+      // Provide a friendly message when the browser blocks the request
+      // (common for Flutter web if the API server doesn't return CORS headers).
+      if (e is http.ClientException || e.toString().contains('Failed to fetch')) {
+        if (mounted) {
+          setState(() {
+      _predictionResult =
+        '❌ Network error: browser blocked the request (CORS).\n'
+        'Ensure the API at https://exoplanetapi.onrender.com allows cross-origin requests.\n'
+        'Server needs header: Access-Control-Allow-Origin: *';
+          });
+        }
+        return;
+      }
+
       if (mounted) {
         setState(() {
           _predictionResult = "❌ Error: ${e.toString()}";
