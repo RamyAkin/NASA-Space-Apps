@@ -11,7 +11,9 @@
     "serve": "npm run build && npm start",
     "test": "flutter test",
     "clean": "flutter clean",
-    "deps": "flutter pub get && npm install"
+    "deps": "flutter pub get && npm install",
+    "railway:build": "flutter pub get && flutter build web --release",
+    "railway:start": "node production-server.js"
   },
   "dependencies": {
     "express": "^4.18.2",

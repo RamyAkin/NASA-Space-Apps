@@ -1,0 +1,19 @@
+# Railway Configuration for NASA Exoplanet App
+
+# Build settings
+[build]
+command = "flutter pub get && flutter build web --release"
+
+# Start command  
+[deploy]
+startCommand = "node production-server.js"
+
+# Environment
+[env]
+PORT = "8080"
+NODE_ENV = "production"
+
+# Health check
+[healthcheck]
+path = "/api/stats"
+timeout = 30
