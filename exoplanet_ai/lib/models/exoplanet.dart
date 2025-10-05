@@ -111,13 +111,26 @@ class Exoplanet {
     
     // Parse CUMULATIVE table additional fields
     double? stellarRadius;
+    // common names across different TAP tables
     if (map['koi_srad'] != null) {
       stellarRadius = (map['koi_srad'] is num) ? (map['koi_srad'] as num).toDouble() : double.tryParse(map['koi_srad'].toString());
+    } else if (map['st_rad'] != null) {
+      stellarRadius = (map['st_rad'] is num) ? (map['st_rad'] as num).toDouble() : double.tryParse(map['st_rad'].toString());
+    } else if (map['st_srad'] != null) {
+      stellarRadius = (map['st_srad'] is num) ? (map['st_srad'] as num).toDouble() : double.tryParse(map['st_srad'].toString());
+    } else if (map['stellar_radius'] != null) {
+      stellarRadius = (map['stellar_radius'] is num) ? (map['stellar_radius'] as num).toDouble() : double.tryParse(map['stellar_radius'].toString());
     }
     
     double? equilibriumTemp;
     if (map['koi_teq'] != null) {
       equilibriumTemp = (map['koi_teq'] is num) ? (map['koi_teq'] as num).toDouble() : double.tryParse(map['koi_teq'].toString());
+    } else if (map['pl_eqt'] != null) {
+      equilibriumTemp = (map['pl_eqt'] is num) ? (map['pl_eqt'] as num).toDouble() : double.tryParse(map['pl_eqt'].toString());
+    } else if (map['teq'] != null) {
+      equilibriumTemp = (map['teq'] is num) ? (map['teq'] as num).toDouble() : double.tryParse(map['teq'].toString());
+    } else if (map['equilibrium_temperature'] != null) {
+      equilibriumTemp = (map['equilibrium_temperature'] is num) ? (map['equilibrium_temperature'] as num).toDouble() : double.tryParse(map['equilibrium_temperature'].toString());
     }
     
     double? transitDepth;
@@ -128,6 +141,12 @@ class Exoplanet {
     double? transitDuration;
     if (map['koi_duration'] != null) {
       transitDuration = (map['koi_duration'] is num) ? (map['koi_duration'] as num).toDouble() : double.tryParse(map['koi_duration'].toString());
+    } else if (map['pl_trandur'] != null) {
+      transitDuration = (map['pl_trandur'] is num) ? (map['pl_trandur'] as num).toDouble() : double.tryParse(map['pl_trandur'].toString());
+    } else if (map['pl_tranduration'] != null) {
+      transitDuration = (map['pl_tranduration'] is num) ? (map['pl_tranduration'] as num).toDouble() : double.tryParse(map['pl_tranduration'].toString());
+    } else if (map['transit_duration'] != null) {
+      transitDuration = (map['transit_duration'] is num) ? (map['transit_duration'] as num).toDouble() : double.tryParse(map['transit_duration'].toString());
     }
     
     return Exoplanet(

@@ -42,69 +42,80 @@ class _FalsePositivesScreenState extends State<FalsePositivesScreen> {
 
   @override
   Widget build(BuildContext context) {
+  // size not used here; removed to avoid unused-variable warnings
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Text(
-          'A World Away',
-          style: GoogleFonts.poppins(
-            fontSize: 24,
-            color: Colors.cyanAccent,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 1.2,
-          ),
-        ),
-        centerTitle: true,
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pushNamed(context, '/'),
-            child: Text('Home', style: GoogleFonts.poppins(color: Colors.white70)),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pushNamed(context, '/confirmed'),
-            child: Text('Confirmed', style: GoogleFonts.poppins(color: Colors.white70)),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pushNamed(context, '/candidates'),
-            child: Text('Candidates', style: GoogleFonts.poppins(color: Colors.white70)),
-          ),
-        ],
-      ),
       body: Stack(
         children: [
-          // Background gradient
-          Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color(0xFF050A1E), Color(0xFF0B1E44)],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
+          // Starry background
+          Positioned.fill(
+            child: Image.asset(
+              'assets/background.png',
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) => Container(color: Colors.black),
+            ),
+          ),
+          // Yellow app bar at the top
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 64,
+            child: Container(
+              color: const Color(0xFFE9CC6C),
+              child: SafeArea(
+                child: SizedBox(
+                  height: 56,
+                  child: Stack(
+                    children: [
+                      Center(
+                        child: Text(
+                          'A World Away',
+                          style: GoogleFonts.poppins(
+                            fontSize: 24,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1.2,
+                          ),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: IconButton(
+                          icon: const Icon(Icons.arrow_back, color: Colors.black),
+                          onPressed: () => Navigator.maybePop(context),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            TextButton(
+                              onPressed: () => Navigator.pushNamed(context, '/'),
+                              child: Text('Home', style: GoogleFonts.poppins(color: Colors.black)),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.pushNamed(context, '/confirmed'),
+                              child: Text('Confirmed', style: GoogleFonts.poppins(color: Colors.black)),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.pushNamed(context, '/candidates'),
+                              child: Text('Candidates', style: GoogleFonts.poppins(color: Colors.black)),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
           ),
-          // Background stars
-          Positioned.fill(
-            child: Opacity(
-              opacity: 0.18,
-              child: Image.asset(
-                'assets/background.png', 
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => const SizedBox.shrink(),
-              ),
-            ),
-          ),
-          // Blur effect
-          Positioned.fill(
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 0.6, sigmaY: 0.6),
-              child: Container(color: Colors.transparent),
-            ),
-          ),
-          // Content
-          Consumer<ExoplanetProvider>(
-        builder: (context, provider, child) {
+          Padding(
+            padding: const EdgeInsets.only(top: 64),
+            child: Consumer<ExoplanetProvider>(
+              builder: (context, provider, child) {
           if (provider.falsePositives.isEmpty && provider.falsePositivesLoading) {
             return const Center(
               child: CircularProgressIndicator(color: Colors.redAccent),
@@ -215,6 +226,7 @@ class _FalsePositivesScreenState extends State<FalsePositivesScreen> {
           );
         },
         ),
+          ),
         ],
       ),
     );

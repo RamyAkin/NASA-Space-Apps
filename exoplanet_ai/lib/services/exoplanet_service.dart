@@ -60,7 +60,7 @@ class ExoplanetService {
   Future<List<Exoplanet>> _fetch(Uri uri) async {
     http.Response resp;
     try {
-      print('Fetching: $uri');
+  // fetching: $uri (log removed for production)
       resp = await http.get(uri);
     } catch (e) {
       throw Exception('Network error: $e');
@@ -110,7 +110,7 @@ class ExoplanetService {
         'ror': exoplanet.radius != null ? (exoplanet.radius! * 0.05) : 0.1, // Radius ratio
       };
 
-      print('Sending AI prediction request for ${exoplanet.name}: $requestBody');
+  // Sent AI prediction request for ${exoplanet.name} (log removed)
       
       final response = await http.post(
         uri,
@@ -123,13 +123,13 @@ class ExoplanetService {
 
       if (response.statusCode == 200) {
         final result = jsonDecode(response.body);
-        print('AI prediction result for ${exoplanet.name}: $result');
+  // AI prediction result received (log removed)
         return result;
       } else {
         throw Exception('AI API error: ${response.statusCode} - ${response.body}');
       }
     } catch (e) {
-      print('Error calling AI API: $e');
+  // Error calling AI API: $e (log removed)
       throw Exception('Failed to get AI prediction: $e');
     }
   }

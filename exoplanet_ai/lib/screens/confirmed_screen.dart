@@ -4,6 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../providers/exoplanet_provider.dart';
 import '../widgets/planet_card.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+// ...existing imports
 
 class ConfirmedScreen extends StatefulWidget {
   const ConfirmedScreen({super.key});
@@ -14,6 +17,9 @@ class ConfirmedScreen extends StatefulWidget {
 
 class _ConfirmedScreenState extends State<ConfirmedScreen> {
   late ScrollController _scrollController;
+  Map<String, dynamic>? _modelStats;
+  bool _statsLoading = false;
+  String? _statsError;
 
   @override
   void initState() {
@@ -26,6 +32,34 @@ class _ConfirmedScreenState extends State<ConfirmedScreen> {
       final provider = Provider.of<ExoplanetProvider>(context, listen: false);
       provider.loadConfirmed(refresh: true);
     });
+    // Load model stats for small summary cards
+    _loadModelStats();
+  }
+
+  Future<void> _loadModelStats() async {
+    setState(() {
+      _statsLoading = true;
+      _statsError = null;
+    });
+
+    try {
+      const String _aiApiBase = String.fromEnvironment('API_AI_BASE', defaultValue: 'http://localhost:3001');
+      final resp = await http.get(Uri.parse('$_aiApiBase/ai/stats'), headers: {'Accept': 'application/json'});
+      if (resp.statusCode == 200) {
+        final data = jsonDecode(resp.body);
+        setState(() {
+          _modelStats = data as Map<String, dynamic>?;
+          _statsLoading = false;
+        });
+      } else {
+        throw Exception('Status ${resp.statusCode}');
+      }
+    } catch (e) {
+      setState(() {
+        _statsError = e.toString();
+        _statsLoading = false;
+      });
+    }
   }
 
   @override
@@ -43,69 +77,84 @@ class _ConfirmedScreenState extends State<ConfirmedScreen> {
 
   @override
   Widget build(BuildContext context) {
+  // size not used here; removed to avoid unused-variable warnings
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Text(
-          'A World Away',
-          style: GoogleFonts.poppins(
-            fontSize: 24,
-            color: Colors.cyanAccent,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 1.2,
-          ),
-        ),
-        centerTitle: true,
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pushNamed(context, '/'),
-            child: Text('Home', style: GoogleFonts.poppins(color: Colors.white70)),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pushNamed(context, '/candidates'),
-            child: Text('Candidates', style: GoogleFonts.poppins(color: Colors.white70)),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pushNamed(context, '/false-positives'),
-            child: Text('False+', style: GoogleFonts.poppins(color: Colors.white70)),
-          ),
-        ],
-      ),
       body: Stack(
         children: [
-          // Background gradient
-          Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color(0xFF050A1E), Color(0xFF0B1E44)],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
+          // Starry background
+          Positioned.fill(
+            child: Image.asset(
+              'assets/background.png',
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) => Container(color: Colors.black),
+            ),
+          ),
+          // Yellow app bar at the top
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 64,
+            child: Container(
+              color: const Color(0xFFE9CC6C),
+              child: SafeArea(
+                child: SizedBox(
+                  height: 56,
+                  child: Stack(
+                    children: [
+                      // Centered title
+                      Center(
+                        child: Text(
+                          'A World Away',
+                          style: GoogleFonts.poppins(
+                            fontSize: 24,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1.2,
+                          ),
+                        ),
+                      ),
+                      // Left back button
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: IconButton(
+                          icon: const Icon(Icons.arrow_back, color: Colors.black),
+                          onPressed: () => Navigator.maybePop(context),
+                        ),
+                      ),
+                      // Right-side nav buttons
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            TextButton(
+                              onPressed: () => Navigator.pushNamed(context, '/'),
+                              child: Text('Home', style: GoogleFonts.poppins(color: Colors.black)),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.pushNamed(context, '/candidates'),
+                              child: Text('Candidates', style: GoogleFonts.poppins(color: Colors.black)),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.pushNamed(context, '/false-positives'),
+                              child: Text('False+', style: GoogleFonts.poppins(color: Colors.black)),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
           ),
-          // Background stars
+          // Page content
           Positioned.fill(
-            child: Opacity(
-              opacity: 0.18,
-              child: Image.asset(
-                'assets/background.png', 
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => const SizedBox.shrink(),
-              ),
-            ),
-          ),
-          // Blur effect
-          Positioned.fill(
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 0.6, sigmaY: 0.6),
-              child: Container(color: Colors.transparent),
-            ),
-          ),
-          // Content
-          Consumer<ExoplanetProvider>(
-        builder: (context, provider, child) {
+            top: 64,
+            child: Consumer<ExoplanetProvider>(
+              builder: (context, provider, child) {
           if (provider.confirmed.isEmpty && provider.confirmedLoading) {
             return const Center(
               child: CircularProgressIndicator(color: Colors.cyanAccent),
@@ -168,6 +217,74 @@ class _ConfirmedScreenState extends State<ConfirmedScreen> {
                         fontSize: 16,
                       ),
                     ),
+                    const SizedBox(height: 12),
+                    // Small stats row (Total / Confirmed / Avg Confidence)
+                    if (_statsLoading)
+                      const SizedBox(
+                        height: 28,
+                        child: Center(child: CircularProgressIndicator(color: Colors.cyanAccent, strokeWidth: 2)),
+                      )
+                    else if (_modelStats != null)
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              padding: const EdgeInsets.all(12),
+                              margin: const EdgeInsets.only(right: 8),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.03),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Total Predictions', style: GoogleFonts.poppins(color: Colors.white70, fontSize: 12)),
+                                  const SizedBox(height: 6),
+                                  Text('${_modelStats!['total_predictions'] ?? 0}', style: GoogleFonts.poppins(color: Colors.white, fontWeight: FontWeight.w700)),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              padding: const EdgeInsets.all(12),
+                              margin: const EdgeInsets.symmetric(horizontal: 4),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.03),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Confirmed', style: GoogleFonts.poppins(color: Colors.white70, fontSize: 12)),
+                                  const SizedBox(height: 6),
+                                  Text('${_modelStats!['confirmed_predictions'] ?? 0}', style: GoogleFonts.poppins(color: Colors.white, fontWeight: FontWeight.w700)),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              padding: const EdgeInsets.all(12),
+                              margin: const EdgeInsets.only(left: 8),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.03),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Avg Confidence', style: GoogleFonts.poppins(color: Colors.white70, fontSize: 12)),
+                                  const SizedBox(height: 6),
+                                  Text('${((_modelStats!['avg_confidence'] ?? 0.0) * 100).toStringAsFixed(1)}%', style: GoogleFonts.poppins(color: Colors.white, fontWeight: FontWeight.w700)),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    else if (_statsError != null)
+                      Text('Stats unavailable', style: GoogleFonts.poppins(color: Colors.white54, fontSize: 12)),
                   ],
                 ),
               ),
@@ -204,6 +321,7 @@ class _ConfirmedScreenState extends State<ConfirmedScreen> {
                           return PlanetCard(
                             planet: planet,
                             accentColor: Colors.cyanAccent,
+                            showAllStats: true,
                             onTap: () {
                               // TODO: Navigate to planet detail screen
                             },
@@ -214,8 +332,9 @@ class _ConfirmedScreenState extends State<ConfirmedScreen> {
               ),
             ],
           );
-        },
-        ),
+              },
+            ),
+          ),
         ],
       ),
     );

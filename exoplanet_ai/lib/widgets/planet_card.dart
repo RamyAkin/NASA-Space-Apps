@@ -9,12 +9,14 @@ class PlanetCard extends StatefulWidget {
   final Exoplanet planet;
   final Color accentColor;
   final VoidCallback? onTap;
+  final bool showAllStats;
 
   const PlanetCard({
     super.key,
     required this.planet,
     required this.accentColor,
     this.onTap,
+    this.showAllStats = false,
   });
 
   @override
@@ -120,13 +122,14 @@ class _PlanetCardState extends State<PlanetCard> {
                     if (widget.planet.mass != null)
                       _buildProperty('Mass', '${widget.planet.mass!.toStringAsFixed(2)} M⊕')
                     else if (widget.planet.equilibriumTemp != null)
-                      _buildProperty('Temp', '${widget.planet.equilibriumTemp!.toStringAsFixed(0)} K'),
+                      _buildProperty('Planetary temp', '${widget.planet.equilibriumTemp!.toStringAsFixed(0)} K'),
                     const SizedBox(height: 6),
                     
                     _buildProperty('Period', '${widget.planet.orbitalPeriod?.toStringAsFixed(1) ?? '-'} days'),
                     
                     // Show additional data for candidates/false positives if available
-                    if (widget.planet.status != 'CONFIRMED') ...[
+                    // or for confirmed planets when showAllStats is true
+                    if (widget.showAllStats || widget.planet.status != 'CONFIRMED') ...[
                       if (widget.planet.stellarRadius != null) ...[
                         const SizedBox(height: 6),
                         _buildProperty('Star R', '${widget.planet.stellarRadius!.toStringAsFixed(2)} R☉'),

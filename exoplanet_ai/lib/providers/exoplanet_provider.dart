@@ -156,7 +156,7 @@ class ExoplanetProvider extends ChangeNotifier {
 
     // Only predict for objects with sufficient data
     if (exoplanet.orbitalPeriod == null) {
-      print('Skipping AI reasoning for ${exoplanet.name}: insufficient data (no orbital period)');
+  // Skipping AI reasoning for ${exoplanet.name}: insufficient data
       return null;
     }
 
@@ -166,7 +166,7 @@ class ExoplanetProvider extends ChangeNotifier {
       notifyListeners();
       return reasoning;
     } catch (e) {
-      print('Error getting AI reasoning for ${exoplanet.name}: $e');
+  // Error getting AI reasoning for ${exoplanet.name} (log removed)
       return null;
     }
   }

@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import '../widgets/website_scaffold.dart';
 
 class AddOrTestPage extends StatefulWidget {
   const AddOrTestPage({super.key});
@@ -36,126 +35,194 @@ class _AddOrTestPageState extends State<AddOrTestPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WebsiteScaffold(
-      body: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 600),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(height: 20),
-              Text(
-                "Add or Test Exoplanet",
-                style: GoogleFonts.poppins(
-                  fontSize: 32,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 12),
-              Text(
-                "Input new planet data or test it against the AI model",
-                style: GoogleFonts.poppins(
-                  fontSize: 16,
-                  color: Colors.white70,
-                ),
-              ),
-              const SizedBox(height: 40),
-
-              // 📝 Form
-              Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    _buildTextField(
-                      controller: _periodController,
-                      label: "Period",
-                      hint: "e.g. 9.48803557±2.775e-05",
-                      keyboard: TextInputType.text,
-                    ),
-                    _buildTextField(
-                      controller: _durationController,
-                      label: "Duration", 
-                      hint: "e.g. 2.5 or 1.23±0.08e-01",
-                      keyboard: TextInputType.text,
-                    ),
-                    _buildTextField(
-                      controller: _depthController,
-                      label: "Depth",
-                      hint: "e.g. 0.001 or 2.3e-03±1.2e-04",
-                      keyboard: TextInputType.text,
-                    ),
-                    _buildTextField(
-                      controller: _rorController,
-                      label: "ROR (Radius Ratio)",
-                      hint: "e.g. 0.1 or 8.7e-02±3.0e-03",
-                      keyboard: TextInputType.text,
-                    ),
-                    const SizedBox(height: 30),
-
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.cyanAccent,
-                        foregroundColor: Colors.black,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 32, vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      onPressed: _isLoading ? null : _submitPrediction,
-                      child: _isLoading 
-                        ? const SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              color: Colors.black,
-                              strokeWidth: 2,
-                            ),
-                          )
-                        : const Text(
-                            "Test with AI",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                            ),
+  // size not used here; removed to avoid unused-variable warnings
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.asset('assets/background.png', fit: BoxFit.cover, errorBuilder: (c, e, s) => Container(color: Colors.black)),
+          ),
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 64,
+            child: Container(
+              color: const Color(0xFFE9CC6C),
+              child: SafeArea(
+                child: SizedBox(
+                  height: 56,
+                  child: Stack(
+                    children: [
+                      Center(
+                        child: Text(
+                          'A World Away',
+                          style: GoogleFonts.poppins(
+                            fontSize: 24,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1.2,
                           ),
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 30),
-
-              if (_predictionResult != null)
-                Column(
-                  children: [
-                    Text(
-                      _predictionResult!,
-                      style: GoogleFonts.poppins(
-                        fontSize: 18,
-                        color: Colors.greenAccent,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    if (_confidenceResult != null) ...[
-                      const SizedBox(height: 8),
-                      Text(
-                        _confidenceResult!,
-                        style: GoogleFonts.poppins(
-                          fontSize: 18,
-                          color: Colors.greenAccent,
-                          fontWeight: FontWeight.w500,
                         ),
-                        textAlign: TextAlign.center,
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: IconButton(
+                          icon: const Icon(Icons.arrow_back, color: Colors.black),
+                          onPressed: () => Navigator.maybePop(context),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            TextButton(
+                              onPressed: () => Navigator.pushNamed(context, '/'),
+                              child: Text('Home', style: GoogleFonts.poppins(color: Colors.black)),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.pushNamed(context, '/confirmed'),
+                              child: Text('Confirmed', style: GoogleFonts.poppins(color: Colors.black)),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.pushNamed(context, '/candidates'),
+                              child: Text('Candidates', style: GoogleFonts.poppins(color: Colors.black)),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 64),
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 600),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 20),
+                    Text(
+                      "Add or Test Exoplanet",
+                      style: GoogleFonts.poppins(
+                        fontSize: 32,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      "Input new planet data or test it against the AI model",
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        color: Colors.white70,
+                      ),
+                    ),
+                    const SizedBox(height: 40),
+
+                    // 📝 Form
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          _buildTextField(
+                            controller: _periodController,
+                            label: "Period",
+                            hint: "e.g. 9.48803557±2.775e-05",
+                            keyboard: TextInputType.text,
+                          ),
+                          _buildTextField(
+                            controller: _durationController,
+                            label: "Duration", 
+                            hint: "e.g. 2.5 or 1.23±0.08e-01",
+                            keyboard: TextInputType.text,
+                          ),
+                          _buildTextField(
+                            controller: _depthController,
+                            label: "Depth",
+                            hint: "e.g. 0.001 or 2.3e-03±1.2e-04",
+                            keyboard: TextInputType.text,
+                          ),
+                          _buildTextField(
+                            controller: _rorController,
+                            label: "ROR (Radius Ratio)",
+                            hint: "e.g. 0.1 or 8.7e-02±3.0e-03",
+                            keyboard: TextInputType.text,
+                          ),
+                          const SizedBox(height: 30),
+
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFFE9CC6C),
+                              foregroundColor: Colors.black,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 32, vertical: 16),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            onPressed: _isLoading ? null : _submitPrediction,
+                            child: _isLoading 
+                              ? const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.black,
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : const Text(
+                                  "Test with AI",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 30),
+
+                    if (_predictionResult != null)
+                      Column(
+                        children: [
+                          Text(
+                            _predictionResult!,
+                            style: GoogleFonts.poppins(
+                              fontSize: 18,
+                              color: Colors.greenAccent,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          if (_confidenceResult != null) ...[
+                            const SizedBox(height: 8),
+                            Text(
+                              _confidenceResult!,
+                              style: GoogleFonts.poppins(
+                                fontSize: 18,
+                                color: Colors.greenAccent,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ],
+                      ),
                   ],
                 ),
-            ],
+              ),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -207,7 +274,7 @@ class _AddOrTestPageState extends State<AddOrTestPage> {
       final depth = _depthController.text.trim();
       final ror = _rorController.text.trim();
 
-      print('Raw string values - Period: "$period", Duration: "$duration", Depth: "$depth", ROR: "$ror"');
+  // raw string values logged in debug during development (removed prints for production)
 
       // Call AI API through local proxy to avoid CORS issues
       const String _aiApiBase = String.fromEnvironment('API_AI_BASE', defaultValue: 'http://localhost:3001');
@@ -230,7 +297,8 @@ class _AddOrTestPageState extends State<AddOrTestPage> {
         final prediction = result['prediction'];
         final confidence = result['confidence'];
 
-        print('API Response - Prediction: $prediction, Confidence: $confidence'); 
+        //print('API Response - Prediction: $prediction, Confidence: $confidence'); 
+        // API response received (removed prints for production)
         
         setState(() {
           // Display confidence only once, with percentage rounding
