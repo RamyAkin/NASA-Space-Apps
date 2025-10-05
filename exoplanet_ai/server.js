@@ -1,3 +1,7 @@
+// This Node server consolidates the previous Python CORS proxy (proxy_server.py)
+// and the Node API into a single service. The Flask-based `proxy_server.py` has
+// been removed to avoid running two proxy servers. All TAP proxying and API
+// endpoints are handled below.
 const express = require('express');
 const cors = require('cors');
 const fs = require('fs').promises;

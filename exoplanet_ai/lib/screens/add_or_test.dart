@@ -28,10 +28,10 @@ class _AddOrTestPageState extends State<AddOrTestPage> {
   void initState() {
     super.initState();
     // Set default values for easy testing (in correct order)
-    _periodController.text = '9.48803557±2.775e-05';
-    _durationController.text = '2.9575±0.0819';
-    _depthController.text = '615.8±19.5';
-    _rorController.text = '2.26 +0.26-0.15';
+    _periodController.text = '8.6893015e+00';
+    _durationController.text = '22.5630000e+00';
+    _depthController.text = '1.1170000e+03';
+    _rorController.text = '2.9843001e-02';
   }
 
   @override
