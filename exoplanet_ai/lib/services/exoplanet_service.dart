@@ -3,8 +3,9 @@ import 'package:http/http.dart' as http;
 import '../models/exoplanet.dart';
 
 class ExoplanetService {
-  static const String _base = 'http://localhost:3001/tap/sync';
-  static const String _aiApiBase = 'http://localhost:3001';
+  // Use compile-time environment variables so the API base can be injected at build time
+  static const String _base = String.fromEnvironment('API_TAP_BASE', defaultValue: 'http://localhost:3001/tap/sync');
+  static const String _aiApiBase = String.fromEnvironment('API_AI_BASE', defaultValue: 'http://localhost:3001');
 
   Uri _buildQueryUrl({required String adql, String format = 'json'}) {
     final params = {

@@ -210,8 +210,9 @@ class _AddOrTestPageState extends State<AddOrTestPage> {
       print('Raw string values - Period: "$period", Duration: "$duration", Depth: "$depth", ROR: "$ror"');
 
       // Call AI API through local proxy to avoid CORS issues
+      const String _aiApiBase = String.fromEnvironment('API_AI_BASE', defaultValue: 'http://localhost:3001');
       final response = await http.post(
-        Uri.parse('http://localhost:3001/ai/predict'),
+        Uri.parse('$_aiApiBase/ai/predict'),
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',

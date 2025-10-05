@@ -30,8 +30,9 @@ class _ModelStatsScreenState extends State<ModelStatsScreen> {
 
     try {
       // Call model stats endpoint
+      const String _aiApiBase = String.fromEnvironment('API_AI_BASE', defaultValue: 'http://localhost:3001');
       final response = await http.get(
-        Uri.parse('http://localhost:3001/ai/stats'),
+        Uri.parse('$_aiApiBase/ai/stats'),
         headers: {'Accept': 'application/json'},
       );
 
