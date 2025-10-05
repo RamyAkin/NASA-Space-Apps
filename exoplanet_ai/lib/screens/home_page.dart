@@ -249,6 +249,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                             Widget imageWidget = Image.asset(
                               imgPath,
                               fit: BoxFit.cover,
+                              filterQuality: FilterQuality.high,
                               errorBuilder: (context, error, stackTrace) {
                                 return Container(
                                   decoration: BoxDecoration(
@@ -266,19 +267,30 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                               },
                             );
 
-                            // Two assets had visible outline artifacts on the edges.
-                            // For those, add a thin circular padding and a matching dark
-                            // circular background to mask any stray pixels and improve
-                            // the circular clipping when scaled.
+                            // For the two problematic assets, apply a radial alpha mask
+                            // so any semi-transparent edge pixels are faded out smoothly
+                            // into the background. This avoids scaling and thick borders.
                             if (imgPath.endsWith('exoplanet1.png') || imgPath.endsWith('exoplanet5.png')) {
-                              return Container(
-                                // inner circular background that matches app darkness
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.black,
+                              // Slightly different masks per asset — planet1 was nearly perfect,
+                              // planet5 needs a bit more fade at the edge to remove hue.
+                              final isFive = imgPath.endsWith('exoplanet5.png');
+                              // planet1: gentle mask that worked well
+                              // planet5: tighter mask + small center offset to correct artwork shift
+                              final radius = isFive ? 0.52 : 0.5;
+                              final stops = isFive ? const [0.0, 0.90, 1.0] : const [0.0, 0.92, 1.0];
+                              final center = isFive ? const Alignment(-0.04, -0.04) : Alignment.center;
+
+                              return ClipOval(
+                                child: ShaderMask(
+                                  shaderCallback: (rect) => RadialGradient(
+                                    center: center,
+                                    radius: radius,
+                                    colors: [Colors.white, Colors.white, Colors.transparent],
+                                    stops: stops,
+                                  ).createShader(rect),
+                                  blendMode: BlendMode.dstIn,
+                                  child: imageWidget,
                                 ),
-                                padding: const EdgeInsets.all(3),
-                                child: ClipOval(child: imageWidget),
                               );
                             }
 

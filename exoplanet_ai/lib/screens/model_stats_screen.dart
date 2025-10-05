@@ -1,8 +1,7 @@
 import 'dart:ui';
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart' as http;
+// network fetching disabled — using hard-coded stats for offline/testing
 
 class ModelStatsScreen extends StatefulWidget {
   const ModelStatsScreen({super.key});
@@ -27,30 +26,38 @@ class _ModelStatsScreenState extends State<ModelStatsScreen> {
       _isLoading = true;
       _error = null;
     });
-
-    try {
-      // Call model stats endpoint
-      const String _aiApiBase = String.fromEnvironment('API_AI_BASE', defaultValue: 'http://localhost:3001');
-      final response = await http.get(
-        Uri.parse('$_aiApiBase/ai/stats'),
-        headers: {'Accept': 'application/json'},
-      );
-
-      if (response.statusCode == 200) {
-        final stats = jsonDecode(response.body);
-        setState(() {
-          _modelStats = stats;
-          _isLoading = false;
-        });
-      } else {
-        throw Exception('Failed to load model stats: ${response.statusCode}');
-      }
-    } catch (e) {
-      setState(() {
-        _error = e.toString();
-        _isLoading = false;
-      });
-    }
+    // Hard-coded stats (for offline/testing). Update values here as needed.
+    await Future.delayed(const Duration(milliseconds: 200)); // simulate brief load
+    setState(() {
+      _modelStats = {
+        'model_type': 'Random Forest Classifier',
+        'training_samples': 9564,
+        'features_count': 4,
+        'last_updated': '2025-10-05',
+        'total_predictions': 70,
+        'confirmed_predictions': 70,
+        'rejected_predictions': 0,
+        'total_confidence': 67.8717343211174,
+        'prediction_history': [
+          {
+            'timestamp': '2025-10-05T20:27:10.324Z',
+            'confidence': 0.9998505115509033,
+          },
+          {
+            'timestamp': '2025-10-05T19:30:39.246Z',
+            'confidence': 0.8562766313552856,
+          },
+          {
+            'timestamp': '2025-10-05T15:52:13.290Z',
+            'confidence': 0.9976220726966858,
+          }
+        ],
+        'api_calls_today': 12,
+        'uptime_hours': 48.5,
+      };
+      _isLoading = false;
+      _error = null;
+    });
   }
 
   @override
@@ -58,13 +65,13 @@ class _ModelStatsScreenState extends State<ModelStatsScreen> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: const Color(0xFFE9CC6C),
         elevation: 0,
         title: Text(
           'A World Away',
           style: GoogleFonts.poppins(
             fontSize: 24,
-            color: Colors.cyanAccent,
+            color: Colors.black,
             fontWeight: FontWeight.bold,
             letterSpacing: 1.2,
           ),
@@ -73,44 +80,33 @@ class _ModelStatsScreenState extends State<ModelStatsScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pushNamed(context, '/'),
-            child: Text('Home', style: GoogleFonts.poppins(color: Colors.white70)),
+            child: Text('Home', style: GoogleFonts.poppins(color: Colors.black)),
           ),
           TextButton(
             onPressed: () => Navigator.pushNamed(context, '/confirmed'),
-            child: Text('Confirmed', style: GoogleFonts.poppins(color: Colors.white70)),
+            child: Text('Confirmed', style: GoogleFonts.poppins(color: Colors.black)),
           ),
           TextButton(
             onPressed: () => Navigator.pushNamed(context, '/candidates'),
-            child: Text('Candidates', style: GoogleFonts.poppins(color: Colors.white70)),
+            child: Text('Candidates', style: GoogleFonts.poppins(color: Colors.black)),
           ),
           TextButton(
             onPressed: () => Navigator.pushNamed(context, '/false-positives'),
-            child: Text('False+', style: GoogleFonts.poppins(color: Colors.white70)),
+            child: Text('False+', style: GoogleFonts.poppins(color: Colors.black)),
           ),
         ],
       ),
       body: Stack(
         children: [
-          // Background gradient
-          Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Color(0xFF0D1B2A),
-                  Color(0xFF1B263B),
-                  Color(0xFF415A77),
-                ],
-              ),
-            ),
-          ),
+          // Use the app's starry background (keeps the screen visually consistent)
+          const SizedBox.shrink(),
           // Background stars
           Positioned.fill(
             child: Opacity(
-              opacity: 0.18,
+              // make the starfield visible and consistent with the home screen
+              opacity: 0.95,
               child: Image.asset(
-                'assets/background.png', 
+                'assets/background.png',
                 fit: BoxFit.cover,
                 errorBuilder: (_, __, ___) => const SizedBox.shrink(),
               ),
@@ -226,34 +222,22 @@ class _ModelStatsScreenState extends State<ModelStatsScreen> {
           
           const SizedBox(height: 16),
           
-          // Usage Statistics
+          // Usage Statistics (approximate)
           _buildStatsCard(
             'Usage Statistics',
             Icons.bar_chart,
             Colors.orangeAccent,
             [
-              _buildStatRow('Total Predictions', '${_modelStats!['total_predictions'] ?? 0}'),
-              _buildStatRow('Confirmed Predictions', '${_modelStats!['confirmed_predictions'] ?? 0}'),
-              _buildStatRow('Rejected Predictions', '${_modelStats!['rejected_predictions'] ?? 0}'),
-              _buildStatRow('Average Confidence', '${((_modelStats!['avg_confidence'] ?? 0.85) * 100).toStringAsFixed(2)}%'),
-              _buildStatRow('Confirmation Rate', '${((_modelStats!['confirmation_rate'] ?? 0) * 100).toStringAsFixed(1)}%'),
+              _buildStatRow('Total Predictions', 'Estimated'),
+              _buildStatRow('Confirmed Predictions', 'Majority'),
+              _buildStatRow('Rejected Predictions', 'Minimal'),
+              _buildStatRow('Average Confidence', 'High'),
+              _buildStatRow('Confirmation Rate', 'Consistent'),
             ],
           ),
           
           const SizedBox(height: 16),
-          
-          // Real-time Activity
-          _buildStatsCard(
-            'Real-time Activity',
-            Icons.access_time,
-            Colors.purpleAccent,
-            [
-              _buildStatRow('API Calls Today', '${_modelStats!['api_calls_today'] ?? 0}'),
-              _buildStatRow('Recent Predictions (24h)', '${_modelStats!['recent_predictions_24h'] ?? 0}'),
-              _buildStatRow('Server Uptime', '${(_modelStats!['uptime_hours'] ?? 0).toStringAsFixed(2)} hours'),
-              _buildStatRow('Last Prediction', _formatLastPrediction(_modelStats!['last_prediction'])),
-            ],
-          ),
+          // Note: Real-time activity removed for static/demo mode
         ],
       ),
     );
@@ -320,25 +304,5 @@ class _ModelStatsScreenState extends State<ModelStatsScreen> {
     );
   }
 
-  String _formatLastPrediction(dynamic lastPrediction) {
-    if (lastPrediction == null) return 'Never';
-    
-    try {
-      final timestamp = DateTime.parse(lastPrediction.toString());
-      final now = DateTime.now();
-      final difference = now.difference(timestamp);
-      
-      if (difference.inMinutes < 1) {
-        return 'Just now';
-      } else if (difference.inMinutes < 60) {
-        return '${difference.inMinutes}m ago';
-      } else if (difference.inHours < 24) {
-        return '${difference.inHours}h ago';
-      } else {
-        return '${difference.inDays}d ago';
-      }
-    } catch (e) {
-      return 'Unknown';
-    }
-  }
+  // Real-time display helpers removed in static/demo mode.
 }
