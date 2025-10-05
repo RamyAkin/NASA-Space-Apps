@@ -34,6 +34,40 @@ npm install
 ./deploy-production.sh
 ```
 
+### Or: run the backend in the background and the Flutter app in dev mode
+
+If you prefer to run the Node.js server in the background and then run the Flutter app while the server is running, use the following commands.
+
+1) Start Node.js server in the background (from the repo root or adjust path):
+
+```bash
+cd "/Users/ramyakin/NASA Space Apps/exoplanet_ai" && nohup node server.js > server.log 2>&1 &
+```
+
+This will start the Node server and write logs to `server.log`. The `nohup` and trailing `&` ensure the process keeps running after you close the terminal.
+
+2) Run the Flutter app (in another terminal window/tab):
+
+```bash
+cd "/Users/ramyakin/NASA Space Apps/exoplanet_ai"
+flutter run -d chrome
+```
+
+3) When you're done, stop the background Node process. You can find and kill it like this:
+
+```bash
+# Find Node process (example)
+lsof -i :3001
+
+# or kill by searching for node
+pkill -f "node server.js"
+```
+
+Notes and tips
+- If you run the Node server on a non-standard port, update the API base URLs in the Flutter code (search for `API_AI_BASE` / `API_TAP_BASE` or replace `localhost:3001`).
+- If you see CORS issues when the Flutter app tries to call the backend, ensure the Node server is started with CORS enabled (the code already uses `cors()` by default).
+- For production builds of the frontend, run `flutter build web --release` and serve the files from `build/web` using the Node server or any static host.
+
 ## 🔧 **Tech Stack**
 
 - **Frontend**: Flutter Web
