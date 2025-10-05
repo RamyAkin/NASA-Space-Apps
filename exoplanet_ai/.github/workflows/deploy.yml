@@ -1,0 +1,52 @@
+# GitHub Actions Workflow for Automatic Deployment
+name: Deploy NASA Exoplanet App
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.16.0'
+        
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install Flutter dependencies
+      run: flutter pub get
+      
+    - name: Install Node.js dependencies  
+      run: npm install
+      
+    - name: Build Flutter Web
+      run: flutter build web --release
+      
+    - name: Deploy to Heroku (example)
+      uses: akhileshns/heroku-deploy@v3.12.12
+      with:
+        heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+        heroku_app_name: "your-nasa-app-name"
+        heroku_email: "your-email@example.com"
+        
+    # Alternative: Deploy to Vercel
+    - name: Deploy to Vercel
+      uses: amondnet/vercel-action@v20
+      with:
+        vercel-token: ${{ secrets.VERCEL_TOKEN }}
+        vercel-project-id: ${{ secrets.PROJECT_ID }}
+        vercel-org-id: ${{ secrets.ORG_ID }}
+        working-directory: ./

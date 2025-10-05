@@ -1,0 +1,40 @@
+# Flutter build artifacts
+build/
+!build/web/
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Logs
+*.log
+logs/
+server.log
+
+# Environment variables
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Dart/Flutter
+.dart_tool/
+.packages
+pubspec.lock
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Temporary files
+*.tmp
+*.temp

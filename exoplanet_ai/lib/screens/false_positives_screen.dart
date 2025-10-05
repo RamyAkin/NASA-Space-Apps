@@ -89,7 +89,7 @@ class _FalsePositivesScreenState extends State<FalsePositivesScreen> {
             child: Opacity(
               opacity: 0.18,
               child: Image.asset(
-                'assets/stars_bg.png', 
+                'assets/background.png', 
                 fit: BoxFit.cover,
                 errorBuilder: (_, __, ___) => const SizedBox.shrink(),
               ),

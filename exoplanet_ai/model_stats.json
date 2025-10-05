@@ -3,11 +3,25 @@
   "training_samples": 9564,
   "features_count": 4,
   "last_updated": "2025-10-05",
-  "total_predictions": 45,
-  "confirmed_predictions": 45,
+  "total_predictions": 46,
+  "confirmed_predictions": 46,
   "rejected_predictions": 0,
-  "total_confidence": 43.59334093332291,
+  "total_confidence": 44.44961756467819,
   "prediction_history": [
+    {
+      "timestamp": "2025-10-05T15:58:14.354Z",
+      "input": {
+        "period": "8.6893015e+00",
+        "duration": "2.5630000e+00",
+        "depth": "1.1170000e+03",
+        "ror": "2.9843001e-02"
+      },
+      "output": {
+        "prediction": 1,
+        "confidence": 0.8562766313552856
+      },
+      "confidence": 0.8562766313552856
+    },
     {
       "timestamp": "2025-10-05T15:52:13.290Z",
       "input": {
@@ -640,7 +654,7 @@
     }
   ],
   "start_time": "2025-10-05T13:55:09.521Z",
-  "api_calls_today": 45,
+  "api_calls_today": 46,
   "last_reset": "Sun Oct 05 2025",
   "accuracy": 0.9523,
   "precision": 0.9341,

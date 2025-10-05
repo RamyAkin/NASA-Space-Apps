@@ -60,8 +60,14 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/stars_bg.png
     - assets/background.png
+    - assets/exostar.png
+    - assets/exoplanet1.png
+    - assets/exoplanet2.png
+    - assets/exoplanet3.png
+    - assets/exoplanet4.png
+    - assets/exoplanet5.png
+    - assets/exoplanet6.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
