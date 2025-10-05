@@ -4,6 +4,7 @@ import '../models/exoplanet.dart';
 
 class ExoplanetService {
   static const String _base = 'http://localhost:3001/tap/sync';
+  static const String _aiApiBase = 'http://localhost:3001';
 
   Uri _buildQueryUrl({required String adql, String format = 'json'}) {
     final params = {
@@ -87,5 +88,53 @@ class ExoplanetService {
     } catch (e) {
       throw Exception('Failed to parse response: $e');
     }
+  }
+
+  // AI Prediction Methods - Exoplanet Confirmation
+  Future<Map<String, dynamic>> predictHabitability(Exoplanet exoplanet) async {
+    try {
+      final uri = Uri.parse('$_aiApiBase/ai/predict');
+      
+      // Only predict if we have orbital period data
+      if (exoplanet.orbitalPeriod == null) {
+        throw Exception('Insufficient data for AI prediction');
+      }
+      
+      // Prepare the request body with the 4 parameters your AI expects
+      // Using orbital period and deriving other values from available data
+      final requestBody = {
+        'period': exoplanet.orbitalPeriod!,
+        'duration': exoplanet.radius != null ? exoplanet.radius! * 2.5 : 3.0, // Transit duration estimate
+        'depth': exoplanet.radius != null ? (exoplanet.radius! * 0.0001) : 0.001, // Transit depth
+        'ror': exoplanet.radius != null ? (exoplanet.radius! * 0.05) : 0.1, // Radius ratio
+      };
+
+      print('Sending AI prediction request for ${exoplanet.name}: $requestBody');
+      
+      final response = await http.post(
+        uri,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: jsonEncode(requestBody),
+      );
+
+      if (response.statusCode == 200) {
+        final result = jsonDecode(response.body);
+        print('AI prediction result for ${exoplanet.name}: $result');
+        return result;
+      } else {
+        throw Exception('AI API error: ${response.statusCode} - ${response.body}');
+      }
+    } catch (e) {
+      print('Error calling AI API: $e');
+      throw Exception('Failed to get AI prediction: $e');
+    }
+  }
+
+  Future<Map<String, dynamic>> predictExoplanetType(Exoplanet exoplanet) async {
+    // You can add more specific prediction endpoints here
+    return await predictHabitability(exoplanet);
   }
 }

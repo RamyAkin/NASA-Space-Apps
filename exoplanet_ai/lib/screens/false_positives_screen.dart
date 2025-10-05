@@ -187,7 +187,7 @@ class _FalsePositivesScreenState extends State<FalsePositivesScreen> {
                         padding: const EdgeInsets.only(bottom: 24),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: _getCrossAxisCount(context),
-                          childAspectRatio: 0.75,
+                          childAspectRatio: 1.0,
                           crossAxisSpacing: 16,
                           mainAxisSpacing: 16,
                         ),

@@ -7,7 +7,8 @@ import 'screens/add_or_test.dart';
 import 'screens/confirmed_screen.dart';
 import 'screens/candidates_screen.dart';
 import 'screens/false_positives_screen.dart';
-import 'screens/placeholder_screen.dart';
+import 'screens/model_stats_screen.dart';
+
 
 
 void main() {
@@ -45,8 +46,7 @@ class MyApp extends StatelessWidget {
             '/confirmed': (context) => const ConfirmedScreen(),
             '/candidates': (context) => const CandidatesScreen(),
             '/false-positives': (context) => const FalsePositivesScreen(),
-            '/statistics': (context) => const PlaceholderScreen(title: 'Model Statistics'),
-            '/settings': (context) => const PlaceholderScreen(title: 'Model Settings'),
+            '/statistics': (context) => const ModelStatsScreen(),
           },
         );
       }),

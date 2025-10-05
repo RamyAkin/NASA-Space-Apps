@@ -37,13 +37,7 @@ class HomePage extends StatelessWidget {
           'title': 'Model Statistics',
           'subtitle': 'Check AI accuracy and performance',
           'route': '/statistics',
-        },
-        {
-          'icon': Icons.settings,
-          'title': 'Model Settings',
-          'subtitle': 'Adjust hyperparameters for retraining',
-          'route': '/settings',
-        },
+        }
       ];
 
   @override

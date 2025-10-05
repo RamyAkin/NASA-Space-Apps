@@ -137,4 +137,45 @@ class ExoplanetProvider extends ChangeNotifier {
       loadFalsePositives(refresh: true),
     ]);
   }
+
+  // AI Reasoning Methods (for candidates and false positives)
+  Map<String, Map<String, dynamic>> _aiReasonings = {};
+  
+  Future<Map<String, dynamic>?> getAIReasoning(Exoplanet exoplanet) async {
+    // Only provide reasoning for non-confirmed objects
+    if (exoplanet.status?.toUpperCase() == 'CONFIRMED') {
+      return null;
+    }
+    
+    final cacheKey = exoplanet.name;
+    
+    // Return cached reasoning if available
+    if (_aiReasonings.containsKey(cacheKey)) {
+      return _aiReasonings[cacheKey];
+    }
+
+    // Only predict for objects with sufficient data
+    if (exoplanet.orbitalPeriod == null) {
+      print('Skipping AI reasoning for ${exoplanet.name}: insufficient data (no orbital period)');
+      return null;
+    }
+
+    try {
+      final reasoning = await _service.predictHabitability(exoplanet);
+      _aiReasonings[cacheKey] = reasoning;
+      notifyListeners();
+      return reasoning;
+    } catch (e) {
+      print('Error getting AI reasoning for ${exoplanet.name}: $e');
+      return null;
+    }
+  }
+
+  bool hasAIReasoning(Exoplanet exoplanet) {
+    return _aiReasonings.containsKey(exoplanet.name);
+  }
+
+  Map<String, dynamic>? getCachedAIReasoning(Exoplanet exoplanet) {
+    return _aiReasonings[exoplanet.name];
+  }
 }

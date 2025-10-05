@@ -1,0 +1,649 @@
+{
+  "model_type": "Random Forest Classifier",
+  "training_samples": 9564,
+  "features_count": 4,
+  "last_updated": "2025-10-05",
+  "total_predictions": 45,
+  "confirmed_predictions": 45,
+  "rejected_predictions": 0,
+  "total_confidence": 43.59334093332291,
+  "prediction_history": [
+    {
+      "timestamp": "2025-10-05T15:52:13.290Z",
+      "input": {
+        "period": "9.48803",
+        "duration": "2.957500819",
+        "depth": "615.8195",
+        "ror": "2.26"
+      },
+      "output": {
+        "prediction": 0,
+        "confidence": 0.9976220726966858
+      },
+      "confidence": 0.9976220726966858
+    },
+    {
+      "timestamp": "2025-10-05T15:52:09.918Z",
+      "input": {
+        "period": "9.48803e-05",
+        "duration": "2.957500819",
+        "depth": "615.8195",
+        "ror": "2.26"
+      },
+      "output": {
+        "prediction": 0,
+        "confidence": 0.9997926950454712
+      },
+      "confidence": 0.9997926950454712
+    },
+    {
+      "timestamp": "2025-10-05T15:52:05.215Z",
+      "input": {
+        "period": "9.48803557e-05",
+        "duration": "2.957500819",
+        "depth": "615.8195",
+        "ror": "2.26"
+      },
+      "output": {
+        "prediction": 0,
+        "confidence": 0.9997926950454712
+      },
+      "confidence": 0.9997926950454712
+    },
+    {
+      "timestamp": "2025-10-05T15:51:46.316Z",
+      "input": {
+        "period": "9.488035572775e-05",
+        "duration": "2.957500819",
+        "depth": "615.8195",
+        "ror": "2.26"
+      },
+      "output": {
+        "prediction": 0,
+        "confidence": 0.9997926950454712
+      },
+      "confidence": 0.9997926950454712
+    },
+    {
+      "timestamp": "2025-10-05T15:50:26.318Z",
+      "input": {
+        "period": "8.6893015e+00",
+        "duration": "2.5630000e+00",
+        "depth": "1.1170000e+03",
+        "ror": "2.9843001e-02"
+      },
+      "output": {
+        "prediction": 1,
+        "confidence": 0.8562766313552856
+      },
+      "confidence": 0.8562766313552856
+    },
+    {
+      "timestamp": "2025-10-05T15:50:20.609Z",
+      "input": {
+        "period": "8.6893015e+00",
+        "duration": "2.5630000e+00",
+        "depth": "1.1170000e+03",
+        "ror": "2.9843001e-02"
+      },
+      "output": {
+        "prediction": 1,
+        "confidence": 0.8562766313552856
+      },
+      "confidence": 0.8562766313552856
+    },
+    {
+      "timestamp": "2025-10-05T15:46:24.488Z",
+      "input": {
+        "period": "8.6893015e+00",
+        "duration": "2.5630000e+00",
+        "depth": "1.1170000e+03",
+        "ror": "2.9843001e-02"
+      },
+      "output": {
+        "prediction": 1,
+        "confidence": 0.8562766313552856
+      },
+      "confidence": 0.8562766313552856
+    },
+    {
+      "timestamp": "2025-10-05T15:46:13.423Z",
+      "input": {
+        "period": "8.6893015e+00",
+        "duration": "2.5630000e+00",
+        "depth": "1.1170000e+03",
+        "ror": "2.9843001e-02"
+      },
+      "output": {
+        "prediction": 1,
+        "confidence": 0.8562766313552856
+      },
+      "confidence": 0.8562766313552856
+    },
+    {
+      "timestamp": "2025-10-05T15:46:10.422Z",
+      "input": {
+        "period": "8.6893015e+00",
+        "duration": "2.5630000e+00",
+        "depth": "1.1170000e+03",
+        "ror": "2.9843001e-02"
+      },
+      "output": {
+        "prediction": 1,
+        "confidence": 0.8562766313552856
+      },
+      "confidence": 0.8562766313552856
+    },
+    {
+      "timestamp": "2025-10-05T15:46:08.708Z",
+      "input": {
+        "period": "8.6893015e+00",
+        "duration": "2.5630000e+00",
+        "depth": "1.1170000e+03",
+        "ror": "2.9843001e-02"
+      },
+      "output": {
+        "prediction": 1,
+        "confidence": 0.8562766313552856
+      },
+      "confidence": 0.8562766313552856
+    },
+    {
+      "timestamp": "2025-10-05T15:43:38.697Z",
+      "input": {
+        "period": "8.6893015e+00",
+        "duration": "2.5630000e+00",
+        "depth": "1.1170000e+03",
+        "ror": "2.9843001e-02"
+      },
+      "output": {
+        "prediction": 1,
+        "confidence": 0.8562766313552856
+      },
+      "confidence": 0.8562766313552856
+    },
+    {
+      "timestamp": "2025-10-05T15:42:43.075Z",
+      "input": {
+        "period": "8.6893015e+00",
+        "duration": "2.5630000e+00",
+        "depth": "1.1170000e+03",
+        "ror": "2.9843001e-02"
+      },
+      "output": {
+        "prediction": 1,
+        "confidence": 0.8562766313552856
+      },
+      "confidence": 0.8562766313552856
+    },
+    {
+      "timestamp": "2025-10-05T15:41:08.709Z",
+      "input": {
+        "period": "1.736952453e-07",
+        "duration": "2.40641",
+        "depth": "8079.2",
+        "ror": "33.46"
+      },
+      "output": {
+        "prediction": 0,
+        "confidence": 0.9998982548713684
+      },
+      "confidence": 0.9998982548713684
+    },
+    {
+      "timestamp": "2025-10-05T15:41:06.482Z",
+      "input": {
+        "period": "1.736952453e-07",
+        "duration": "2.40641",
+        "depth": "8079.2",
+        "ror": "33.46"
+      },
+      "output": {
+        "prediction": 0,
+        "confidence": 0.9998982548713684
+      },
+      "confidence": 0.9998982548713684
+    },
+    {
+      "timestamp": "2025-10-05T15:41:01.066Z",
+      "input": {
+        "period": "1.736952453e-07",
+        "duration": "2.40641",
+        "depth": "8079.2",
+        "ror": "33.46"
+      },
+      "output": {
+        "prediction": 0,
+        "confidence": 0.9998982548713684
+      },
+      "confidence": 0.9998982548713684
+    },
+    {
+      "timestamp": "2025-10-05T15:38:05.334Z",
+      "input": {
+        "period": "8.6893015e+00",
+        "duration": "2.5630000e+00",
+        "depth": "1.1170000e+03",
+        "ror": "2.9843001e-02"
+      },
+      "output": {
+        "prediction": 1,
+        "confidence": 0.8562766313552856
+      },
+      "confidence": 0.8562766313552856
+    },
+    {
+      "timestamp": "2025-10-05T15:14:09.406Z",
+      "input": {
+        "period": 9.48803557,
+        "duration": 2.9575,
+        "depth": 615.8,
+        "ror": 2.26
+      },
+      "output": {
+        "prediction": 0,
+        "confidence": 0.9976220726966858
+      },
+      "confidence": 0.9976220726966858
+    },
+    {
+      "timestamp": "2025-10-05T15:13:32.250Z",
+      "input": {
+        "period": 9.48803557,
+        "duration": 2.9575,
+        "depth": 615.8,
+        "ror": 2.26
+      },
+      "output": {
+        "prediction": 0,
+        "confidence": 0.9976220726966858
+      },
+      "confidence": 0.9976220726966858
+    },
+    {
+      "timestamp": "2025-10-05T15:13:31.472Z",
+      "input": {
+        "period": 9.48803557,
+        "duration": 2.9575,
+        "depth": 615.8,
+        "ror": 2.26
+      },
+      "output": {
+        "prediction": 0,
+        "confidence": 0.9976220726966858
+      },
+      "confidence": 0.9976220726966858
+    },
+    {
+      "timestamp": "2025-10-05T15:13:21.582Z",
+      "input": {
+        "period": 9.48803557,
+        "duration": 2.9575,
+        "depth": 615.8,
+        "ror": 2.26
+      },
+      "output": {
+        "prediction": 0,
+        "confidence": 0.9976220726966858
+      },
+      "confidence": 0.9976220726966858
+    },
+    {
+      "timestamp": "2025-10-05T15:07:18.550Z",
+      "input": {
+        "period": 9.48803557,
+        "duration": 2.9575,
+        "depth": 615.8,
+        "ror": 2.26
+      },
+      "output": {
+        "prediction": 0,
+        "confidence": 0.9976220726966858
+      },
+      "confidence": 0.9976220726966858
+    },
+    {
+      "timestamp": "2025-10-05T15:01:36.606Z",
+      "input": {
+        "period": 9.48803557,
+        "duration": 2.9575,
+        "depth": 615.8,
+        "ror": 2.26
+      },
+      "output": {
+        "prediction": 0,
+        "confidence": 0.9976220726966858
+      },
+      "confidence": 0.9976220726966858
+    },
+    {
+      "timestamp": "2025-10-05T15:01:15.832Z",
+      "input": {
+        "period": 9.48803557,
+        "duration": 2.9575,
+        "depth": 615.8,
+        "ror": 2.26
+      },
+      "output": {
+        "prediction": 0,
+        "confidence": 0.9976220726966858
+      },
+      "confidence": 0.9976220726966858
+    },
+    {
+      "timestamp": "2025-10-05T14:54:59.019Z",
+      "input": {
+        "period": 8.6893015,
+        "duration": 2.563,
+        "depth": 1.117,
+        "ror": 2.9843001
+      },
+      "output": {
+        "prediction": 0,
+        "confidence": 0.9825412034988403
+      },
+      "confidence": 0.9825412034988403
+    },
+    {
+      "timestamp": "2025-10-05T14:54:47.467Z",
+      "input": {
+        "period": 8.6893015,
+        "duration": 2.563,
+        "depth": 1.117,
+        "ror": 2.9843001
+      },
+      "output": {
+        "prediction": 0,
+        "confidence": 0.9825412034988403
+      },
+      "confidence": 0.9825412034988403
+    },
+    {
+      "timestamp": "2025-10-05T14:48:15.863Z",
+      "input": {
+        "period": 9.48803557,
+        "duration": 2.9575,
+        "depth": 615.8,
+        "ror": 2.26
+      },
+      "output": {
+        "prediction": 0,
+        "confidence": 0.9976220726966858
+      },
+      "confidence": 0.9976220726966858
+    },
+    {
+      "timestamp": "2025-10-05T14:48:10.264Z",
+      "input": {
+        "period": 9.48803557,
+        "duration": 2.9575,
+        "depth": 615.8,
+        "ror": 2.26
+      },
+      "output": {
+        "prediction": 0,
+        "confidence": 0.9976220726966858
+      },
+      "confidence": 0.9976220726966858
+    },
+    {
+      "timestamp": "2025-10-05T14:46:01.987Z",
+      "input": {
+        "period": 9.48803557,
+        "duration": 2.9575,
+        "depth": 615.8,
+        "ror": 2.26
+      },
+      "output": {
+        "prediction": 0,
+        "confidence": 0.9976220726966858
+      },
+      "confidence": 0.9976220726966858
+    },
+    {
+      "timestamp": "2025-10-05T14:45:37.134Z",
+      "input": {
+        "period": 9.48803557,
+        "duration": 2.9575,
+        "depth": 615.8,
+        "ror": 2.26
+      },
+      "output": {
+        "prediction": 0,
+        "confidence": 0.9976220726966858
+      },
+      "confidence": 0.9976220726966858
+    },
+    {
+      "timestamp": "2025-10-05T14:45:36.663Z",
+      "input": {
+        "period": 9.48803557,
+        "duration": 2.9575,
+        "depth": 615.8,
+        "ror": 2.26
+      },
+      "output": {
+        "prediction": 0,
+        "confidence": 0.9976220726966858
+      },
+      "confidence": 0.9976220726966858
+    },
+    {
+      "timestamp": "2025-10-05T14:45:36.161Z",
+      "input": {
+        "period": 9.48803557,
+        "duration": 2.9575,
+        "depth": 615.8,
+        "ror": 2.26
+      },
+      "output": {
+        "prediction": 0,
+        "confidence": 0.9976220726966858
+      },
+      "confidence": 0.9976220726966858
+    },
+    {
+      "timestamp": "2025-10-05T14:45:35.597Z",
+      "input": {
+        "period": 9.48803557,
+        "duration": 2.9575,
+        "depth": 615.8,
+        "ror": 2.26
+      },
+      "output": {
+        "prediction": 0,
+        "confidence": 0.9976220726966858
+      },
+      "confidence": 0.9976220726966858
+    },
+    {
+      "timestamp": "2025-10-05T14:45:34.880Z",
+      "input": {
+        "period": 9.48803557,
+        "duration": 2.9575,
+        "depth": 615.8,
+        "ror": 2.26
+      },
+      "output": {
+        "prediction": 0,
+        "confidence": 0.9976220726966858
+      },
+      "confidence": 0.9976220726966858
+    },
+    {
+      "timestamp": "2025-10-05T14:45:33.846Z",
+      "input": {
+        "period": 9.48803557,
+        "duration": 2.9575,
+        "depth": 615.8,
+        "ror": 2.26
+      },
+      "output": {
+        "prediction": 0,
+        "confidence": 0.9976220726966858
+      },
+      "confidence": 0.9976220726966858
+    },
+    {
+      "timestamp": "2025-10-05T14:40:25.767Z",
+      "input": {
+        "period": 9.48803557,
+        "duration": 2.9575,
+        "depth": 615.8,
+        "ror": 2.26
+      },
+      "output": {
+        "prediction": 0,
+        "confidence": 0.9976220726966858
+      },
+      "confidence": 0.9976220726966858
+    },
+    {
+      "timestamp": "2025-10-05T14:40:23.913Z",
+      "input": {
+        "period": 9.48803557,
+        "duration": 2.9575,
+        "depth": 615.8,
+        "ror": 2.26
+      },
+      "output": {
+        "prediction": 0,
+        "confidence": 0.9976220726966858
+      },
+      "confidence": 0.9976220726966858
+    },
+    {
+      "timestamp": "2025-10-05T14:37:04.196Z",
+      "input": {
+        "period": 9.48803557,
+        "duration": 2.9575,
+        "depth": 615.8,
+        "ror": 2.26
+      },
+      "output": {
+        "prediction": 0,
+        "confidence": 0.9976220726966858
+      },
+      "confidence": 0.9976220726966858
+    },
+    {
+      "timestamp": "2025-10-05T14:30:01.565Z",
+      "input": {
+        "period": 9.48803557,
+        "duration": 2.9575,
+        "depth": 615.8,
+        "ror": 2.26
+      },
+      "output": {
+        "prediction": 0,
+        "confidence": 0.9976220726966858
+      },
+      "confidence": 0.9976220726966858
+    },
+    {
+      "timestamp": "2025-10-05T14:29:44.156Z",
+      "input": {
+        "period": 9.48803557,
+        "duration": 2.9575,
+        "depth": 615.8,
+        "ror": 2.26
+      },
+      "output": {
+        "prediction": 0,
+        "confidence": 0.9976220726966858
+      },
+      "confidence": 0.9976220726966858
+    },
+    {
+      "timestamp": "2025-10-05T14:21:08.464Z",
+      "input": {
+        "period": 9.48803557,
+        "duration": 2.9575,
+        "depth": 615.8,
+        "ror": 2.26
+      },
+      "output": {
+        "prediction": 0,
+        "confidence": 0.9976220726966858
+      },
+      "confidence": 0.9976220726966858
+    },
+    {
+      "timestamp": "2025-10-05T14:13:47.250Z",
+      "input": {
+        "period": 0.0000948803557,
+        "duration": 2.9575,
+        "depth": 615.8,
+        "ror": 2.26
+      },
+      "output": {
+        "prediction": 0,
+        "confidence": 0.9997926950454712
+      },
+      "confidence": 0.9997926950454712
+    },
+    {
+      "timestamp": "2025-10-05T13:58:07.665Z",
+      "input": {
+        "period": 9.48803557,
+        "duration": 2.9575,
+        "depth": 615.8,
+        "ror": 2.26
+      },
+      "output": {
+        "prediction": 0,
+        "confidence": 0.9976220726966858
+      },
+      "confidence": 0.9976220726966858
+    },
+    {
+      "timestamp": "2025-10-05T13:56:30.702Z",
+      "input": {
+        "period": 100,
+        "duration": 1,
+        "depth": 10,
+        "ror": 1.5
+      },
+      "output": {
+        "prediction": 0,
+        "confidence": 0.9844033122062683
+      },
+      "confidence": 0.9844033122062683
+    },
+    {
+      "timestamp": "2025-10-05T13:56:20.381Z",
+      "input": {
+        "period": 1.2,
+        "duration": 0.5,
+        "depth": 50,
+        "ror": 0.8
+      },
+      "output": {
+        "prediction": 0,
+        "confidence": 0.997948169708252
+      },
+      "confidence": 0.997948169708252
+    },
+    {
+      "timestamp": "2025-10-05T13:55:44.803Z",
+      "input": {
+        "period": 9.48803557,
+        "duration": 2.9575,
+        "depth": 615.8,
+        "ror": 2.26
+      },
+      "output": {
+        "prediction": 0,
+        "confidence": 0.9976220726966858
+      },
+      "confidence": 0.9976220726966858
+    }
+  ],
+  "start_time": "2025-10-05T13:55:09.521Z",
+  "api_calls_today": 45,
+  "last_reset": "Sun Oct 05 2025",
+  "accuracy": 0.9523,
+  "precision": 0.9341,
+  "recall": 0.9706,
+  "f1_score": 0.9521
+}
