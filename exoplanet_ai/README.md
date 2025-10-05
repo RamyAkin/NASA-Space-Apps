@@ -34,21 +34,13 @@ npm install
 ./deploy-production.sh
 ```
 
-## 🚂 **Deploy to Railway**
-
-1. [Sign up for Railway](https://railway.app)
-2. Click the "Deploy on Railway" button above
-3. Select this repository: `RamyAkin/NASA-Space-Apps`
-4. Choose the `exoplanet_ai` folder
-5. Your app will be live in 2-3 minutes!
-
 ## 🔧 **Tech Stack**
 
 - **Frontend**: Flutter Web
 - **Backend**: Node.js + Express
 - **Data Source**: NASA Exoplanet Archive TAP API
 - **ML**: Custom habitability prediction model
-- **Deployment**: Railway, Vercel, or Heroku ready
+- **Deployment**: Railway
 
 ## 📱 **Screenshots**
 
@@ -57,10 +49,6 @@ _[Add screenshots of your app here]_
 ## 🤝 **Contributing**
 
 Built for NASA Space Apps Challenge 2025 - feel free to fork and improve!
-
-## 📄 **License**
-
-MIT License - see [LICENSE](LICENSE) for details
 
 ---
 
