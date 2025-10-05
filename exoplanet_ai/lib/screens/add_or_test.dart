@@ -276,8 +276,8 @@ class _AddOrTestPageState extends State<AddOrTestPage> {
 
   // raw string values logged in debug during development (removed prints for production)
 
-      // Call AI API through local proxy to avoid CORS issues
-      const String _aiApiBase = String.fromEnvironment('API_AI_BASE', defaultValue: 'http://localhost:3001');
+      // Call AI API
+      const String _aiApiBase = String.fromEnvironment('API_AI_BASE', defaultValue: 'https://nasaserver.onrender.com');
       final response = await http.post(
         Uri.parse('$_aiApiBase/ai/predict'),
         headers: {
@@ -292,7 +292,7 @@ class _AddOrTestPageState extends State<AddOrTestPage> {
         }),
       );
 
-      if (response.statusCode == 200) {
+        if (response.statusCode == 200) {
         final result = jsonDecode(response.body);
         final prediction = result['prediction'];
         final confidence = result['confidence'];
@@ -300,6 +300,7 @@ class _AddOrTestPageState extends State<AddOrTestPage> {
         //print('API Response - Prediction: $prediction, Confidence: $confidence'); 
         // API response received (removed prints for production)
         
+        if (!mounted) return;
         setState(() {
           // Display confidence only once, with percentage rounding
           _confidenceResult = confidence != null 
@@ -317,13 +318,17 @@ class _AddOrTestPageState extends State<AddOrTestPage> {
         throw Exception('API Error: ${response.statusCode}');
       }
     } catch (e) {
-      setState(() {
-        _predictionResult = "❌ Error: ${e.toString()}";
-      });
+      if (mounted) {
+        setState(() {
+          _predictionResult = "❌ Error: ${e.toString()}";
+        });
+      }
     } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
