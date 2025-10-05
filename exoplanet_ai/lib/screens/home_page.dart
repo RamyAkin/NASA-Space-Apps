@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../widgets/website_scaffold.dart';
 import '../widgets/option_card.dart';
-import 'add_or_test.dart';
+
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -12,33 +12,37 @@ class HomePage extends StatelessWidget {
           'icon': Icons.add_circle_outline,
           'title': 'Add or Test Exoplanet',
           'subtitle': 'Input new data or test it against the AI model',
-          'page': const AddOrTestPage(),
+          'route': '/add-test',
         },
         {
           'icon': Icons.public,
           'title': 'Confirmed Exoplanets',
           'subtitle': 'Browse all known confirmed planets',
-          'page': const (),
+          'route': '/confirmed',
         },
         {
           'icon': Icons.search,
           'title': 'Candidate Planets',
           'subtitle': 'Explore potential new discoveries',
+          'route': '/candidates',
         },
         {
           'icon': Icons.report_off,
           'title': 'False Positives',
           'subtitle': 'Review and analyze rejected detections',
+          'route': '/false-positives',
         },
         {
           'icon': Icons.bar_chart,
           'title': 'Model Statistics',
           'subtitle': 'Check AI accuracy and performance',
+          'route': '/statistics',
         },
         {
           'icon': Icons.settings,
           'title': 'Model Settings',
           'subtitle': 'Adjust hyperparameters for retraining',
+          'route': '/settings',
         },
       ];
 
@@ -78,9 +82,9 @@ class HomePage extends StatelessWidget {
                   fontSize: 20,
                 ),
               ),
-              const SizedBox(height: 500),
+              const SizedBox(height: 40),
 
-              // 🔳 Boxes (OptionCards)
+              // Option Cards
               Column(
                 children: List.generate(_options.length, (i) {
                   final opt = _options[i];
@@ -92,23 +96,8 @@ class HomePage extends StatelessWidget {
                       title: opt['title'] as String,
                       subtitle: opt['subtitle'] as String,
                       onTap: () {
-                        if (opt.containsKey('page') && opt['page'] is Widget) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => opt['page'] as Widget,
-                            ),
-                          );
-                        } else {
-                          // No page defined
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                'The "${opt['title']}" page is not implemented yet.',
-                              ),
-                            ),
-                          );
-                        }
+                        final route = opt['route'] as String;
+                        Navigator.pushNamed(context, route);
                       },
                     ),
                   );

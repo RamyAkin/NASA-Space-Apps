@@ -13,14 +13,28 @@ class WebsiteScaffold extends StatelessWidget {
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          // ⭐ Background image
+          // Background gradient
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xFF050A1E), Color(0xFF0B1E44)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+          ),
+          // Background stars
           Positioned.fill(
             child: Opacity(
               opacity: 0.18,
-              child: Image.asset('assets/background.png', fit: BoxFit.cover),
+              child: Image.asset(
+                'assets/stars_bg.png', 
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+              ),
             ),
           ),
-          // Blur vignette
+          // Blur effect
           Positioned.fill(
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 0.6, sigmaY: 0.6),
@@ -32,7 +46,7 @@ class WebsiteScaffold extends StatelessWidget {
           SafeArea(
             child: Column(
               children: [
-                // 🌌 Custom NavBar
+                // Custom NavBar
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 24,
@@ -47,9 +61,9 @@ class WebsiteScaffold extends StatelessWidget {
                         GestureDetector(
                           onTap: () => Navigator.pushNamed(context, '/'),
                           child: Text(
-                            'Uclan Tech',
-                            style: GoogleFonts.abel(
-                              fontSize: 28,
+                            'A World Away',
+                            style: GoogleFonts.poppins(
+                              fontSize: 24,
                               color: Colors.cyanAccent,
                               fontWeight: FontWeight.bold,
                               letterSpacing: 1.2,
@@ -64,7 +78,7 @@ class WebsiteScaffold extends StatelessWidget {
                             children: [
                               _navButton(context, 'Home', '/'),
                               const SizedBox(width: 16),
-                              _navButton(context, 'Explore', '/explore'),
+                              _navButton(context, 'Add/Test', '/add-test'),
                             ],
                           ),
                         ),
@@ -74,9 +88,11 @@ class WebsiteScaffold extends StatelessWidget {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
+                              _navButton(context, 'Confirmed', '/confirmed'),
+                              const SizedBox(width: 16),
                               _navButton(context, 'Candidates', '/candidates'),
                               const SizedBox(width: 16),
-                              _navButton(context, 'Flase Positives', '/falsepositives'),
+                              _navButton(context, 'False+', '/false-positives'),
                             ],
                           ),
                         ),
@@ -90,7 +106,7 @@ class WebsiteScaffold extends StatelessWidget {
                   child: SingleChildScrollView(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 20,
-                      vertical: 40,
+                      vertical: 20,
                     ),
                     child: body,
                   ),
@@ -104,13 +120,23 @@ class WebsiteScaffold extends StatelessWidget {
   }
 
   Widget _navButton(BuildContext context, String label, String route) {
+    final isCurrentRoute = ModalRoute.of(context)?.settings.name == route;
+    
     return TextButton(
-      onPressed: () => Navigator.pushNamed(context, route),
+      onPressed: () {
+        if (route == '/') {
+          Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+        } else {
+          Navigator.pushNamed(context, route);
+        }
+      },
+      style: TextButton.styleFrom(
+        foregroundColor: isCurrentRoute ? Colors.cyanAccent : Colors.white70,
+      ),
       child: Text(
         label,
-        style: GoogleFonts.abel(
-          color: Colors.white,
-          fontWeight: FontWeight.w500,
+        style: GoogleFonts.poppins(
+          fontWeight: isCurrentRoute ? FontWeight.w600 : FontWeight.w400,
         ),
       ),
     );

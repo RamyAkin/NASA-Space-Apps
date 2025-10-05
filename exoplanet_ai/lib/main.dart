@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-<<<<<<< HEAD
-import 'pages/home_page.dart';
-=======
 import 'package:provider/provider.dart';
 import 'providers/exoplanet_provider.dart';
-import 'home_page.dart';
->>>>>>> 95b5ea0c5dcbc00bb5ecc185504528a6123eff0c
+import 'screens/home_page.dart';  
+import 'screens/add_or_test.dart';
+import 'screens/confirmed_screen.dart';
+import 'screens/candidates_screen.dart';
+import 'screens/false_positives_screen.dart';
+import 'screens/placeholder_screen.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -36,10 +38,15 @@ class MyApp extends StatelessWidget {
             scaffoldBackgroundColor: Colors.transparent,
             visualDensity: VisualDensity.adaptivePlatformDensity,
           ),
-          home: const HomePage(),
-          // optional named routes
+          initialRoute: '/',
           routes: {
-            // add named routes here if desired later
+            '/': (context) => const HomePage(),
+            '/add-test': (context) => const AddOrTestPage(),
+            '/confirmed': (context) => const ConfirmedScreen(),
+            '/candidates': (context) => const CandidatesScreen(),
+            '/false-positives': (context) => const FalsePositivesScreen(),
+            '/statistics': (context) => const PlaceholderScreen(title: 'Model Statistics'),
+            '/settings': (context) => const PlaceholderScreen(title: 'Model Settings'),
           },
         );
       }),

@@ -111,7 +111,6 @@ class _AddOrTestPageState extends State<AddOrTestPage> {
 
               const SizedBox(height: 30),
 
-              // 🔮 Prediction Result
               if (_predictionResult != null)
                 Text(
                   _predictionResult!,

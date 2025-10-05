@@ -1,9 +1,10 @@
 class Exoplanet {
   final String name;
-  final String status;
+  final String? status;
   final double? radius; // Earth radii
   final double? mass; // Earth masses
   final double? orbitalPeriod; // days
+  final int? discoveryYear; // Add this field
 
   Exoplanet({
     required this.name,
@@ -11,6 +12,7 @@ class Exoplanet {
     this.radius,
     this.mass,
     this.orbitalPeriod,
+    this.discoveryYear,
   });
 
   factory Exoplanet.fromJson(Map<String, dynamic> json) {
@@ -29,12 +31,66 @@ class Exoplanet {
       if (orbper == null && json['pl_orbper'] == null && json['koi_period'] != null) orbper = (json['koi_period'] is num) ? (json['koi_period'] as num).toDouble() : double.tryParse(json['koi_period'].toString());
     } catch (_) {}
 
+    int? discYear;
+    try {
+      if (json['disc_year'] != null) discYear = (json['disc_year'] is num) ? (json['disc_year'] as num).toInt() : int.tryParse(json['disc_year'].toString());
+      if (discYear == null && json['pl_disc'] != null) discYear = (json['pl_disc'] is num) ? (json['pl_disc'] as num).toInt() : int.tryParse(json['pl_disc'].toString());
+    } catch (_) {}
+
     return Exoplanet(
       name: name,
       status: status,
       radius: rade,
       mass: bmasse,
       orbitalPeriod: orbper,
+      discoveryYear: discYear,
+    );
+  }
+
+  factory Exoplanet.fromMap(Map<String, dynamic> map) {
+    // Handle NASA TAP field names
+    String name = map['pl_name'] ?? map['kepoi_name'] ?? map['name'] ?? 'Unknown';
+    String? status = map['koi_disposition'] ?? map['status'] ?? 'CONFIRMED';
+    
+    // Parse radius (Earth radii)
+    double? radius;
+    if (map['pl_rade'] != null) {
+      radius = (map['pl_rade'] is num) ? (map['pl_rade'] as num).toDouble() : double.tryParse(map['pl_rade'].toString());
+    } else if (map['radius'] != null) {
+      radius = (map['radius'] is num) ? (map['radius'] as num).toDouble() : double.tryParse(map['radius'].toString());
+    }
+    
+    // Parse mass (Earth masses) 
+    double? mass;
+    if (map['pl_bmasse'] != null) {
+      mass = (map['pl_bmasse'] is num) ? (map['pl_bmasse'] as num).toDouble() : double.tryParse(map['pl_bmasse'].toString());
+    } else if (map['mass'] != null) {
+      mass = (map['mass'] is num) ? (map['mass'] as num).toDouble() : double.tryParse(map['mass'].toString());
+    }
+    
+    // Parse orbital period (days)
+    double? orbitalPeriod;
+    if (map['pl_orbper'] != null) {
+      orbitalPeriod = (map['pl_orbper'] is num) ? (map['pl_orbper'] as num).toDouble() : double.tryParse(map['pl_orbper'].toString());
+    } else if (map['orbitalPeriod'] != null) {
+      orbitalPeriod = (map['orbitalPeriod'] is num) ? (map['orbitalPeriod'] as num).toDouble() : double.tryParse(map['orbitalPeriod'].toString());
+    }
+    
+    // Parse discovery year
+    int? discoveryYear;
+    if (map['disc_year'] != null) {
+      discoveryYear = (map['disc_year'] is num) ? (map['disc_year'] as num).toInt() : int.tryParse(map['disc_year'].toString());
+    } else if (map['discoveryYear'] != null) {
+      discoveryYear = (map['discoveryYear'] is num) ? (map['discoveryYear'] as num).toInt() : int.tryParse(map['discoveryYear'].toString());
+    }
+    
+    return Exoplanet(
+      name: name,
+      status: status,
+      radius: radius,
+      mass: mass,
+      orbitalPeriod: orbitalPeriod,
+      discoveryYear: discoveryYear,
     );
   }
 }
