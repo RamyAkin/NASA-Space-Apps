@@ -10,12 +10,13 @@ class HomePage extends StatefulWidget {
 }
  
 class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
+  // Each planet now explicitly contains a route so it's always matched to an option
   final List<Map<String, String>> planets = [
-    {'name': 'Add or Test', 'image': 'assets/exoplanet1.png'},
-    {'name': 'Confirmed', 'image': 'assets/exoplanet2.png'},
-    {'name': 'Candidates', 'image': 'assets/exoplanet3.png'},
-    {'name': 'False Positives', 'image': 'assets/exoplanet4.png'},
-    {'name': 'Model Stats', 'image': 'assets/exoplanet5.png'},
+    {'name': 'Add or Test', 'image': 'assets/exoplanet1.png', 'route': '/add-test'},
+    {'name': 'Confirmed', 'image': 'assets/exoplanet2.png', 'route': '/confirmed'},
+    {'name': 'Candidates', 'image': 'assets/exoplanet3.png', 'route': '/candidates'},
+    {'name': 'False Positives', 'image': 'assets/exoplanet4.png', 'route': '/false-positives'},
+    {'name': 'Model Stats', 'image': 'assets/exoplanet5.png', 'route': '/statistics'},
   ];
  
   double angleOffset = 0.0;
@@ -45,22 +46,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   }
 
   void _navigateToSelectedPage() {
-    switch (selectedIndex) {
-      case 0: // Add or Test
-        Navigator.pushNamed(context, '/add-test');
-        break;
-      case 1: // Confirmed
-        Navigator.pushNamed(context, '/confirmed');
-        break;
-      case 2: // Candidates
-        Navigator.pushNamed(context, '/candidates');
-        break;
-      case 3: // False Positives
-        Navigator.pushNamed(context, '/false-positives');
-        break;
-      case 4: // Model Stats
-        Navigator.pushNamed(context, '/statistics');
-        break;
+    final route = planets[selectedIndex]['route'];
+    if (route != null && route.isNotEmpty) {
+      Navigator.pushNamed(context, route);
     }
   }
  
@@ -71,7 +59,11 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   }
 
   void _animateToSelection(int index) {
-    double targetAngle = index * (2 * pi / planets.length);
+  // We want the selected planet to appear at the top (angle == pi/2).
+  // The planet position calculation uses (i*step + angleOffset + pi/2).
+  // To make i == index evaluate to pi/2, we need angleOffset == -index*step.
+  double step = 2 * pi / planets.length;
+  double targetAngle = -index * step;
     double currentAngle = angleOffset;
     
     // Find shortest rotation path
@@ -190,51 +182,97 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
               ),
             ),
           ),
-          // Animated orbital planets - only show the centered one
-          for (int i = 0; i < planets.length; i++)
-            if (i == selectedIndex) // Only show the selected planet
-              Positioned(
-                left: centerX + cos(i * (2 * pi / planets.length) + angleOffset + pi/2) * radius - planetSize / 2,
-                top: sunCenterY - sin(i * (2 * pi / planets.length) + angleOffset + pi/2) * radius - planetSize / 2,
-                child: GestureDetector(
-                  onTap: _navigateToSelectedPage,
-                  child: Container(
-                    width: planetSize,
-                    height: planetSize,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.amber.withOpacity(0.5),
-                          blurRadius: 24,
-                          spreadRadius: 2,
-                        ),
-                      ],
-                    ),
-                    child: ClipOval(
-                      child: Image.asset(
-                        planets[i]['image']!,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              gradient: LinearGradient(
-                                colors: [Colors.blue.shade300, Colors.blue.shade600],
-                              ),
-                            ),
-                            child: const Icon(
-                              Icons.public,
-                              color: Colors.white,
-                              size: 35,
-                            ),
-                          );
+          // Animated orbital planets - render all planets and emphasize the one near the top
+          // We'll compute an angular distance to the top (pi/2) and map that to scale & opacity.
+          () {
+            final step = 2 * pi / planets.length;
+            // Build a list of indices and their distance so we can sort draw order (farthest first)
+            final List<Map<String, dynamic>> order = [];
+            for (int i = 0; i < planets.length; i++) {
+              final anglePos = i * step + angleOffset + pi / 2;
+              // normalize difference to [-pi, pi]
+              double diff = anglePos - (pi / 2);
+              while (diff > pi) diff -= 2 * pi;
+              while (diff < -pi) diff += 2 * pi;
+              final absDiff = diff.abs();
+              order.add({'i': i, 'absDiff': absDiff, 'anglePos': anglePos});
+            }
+            // Sort so farthest (largest absDiff) are drawn first; closest drawn last (on top)
+            order.sort((a, b) => (b['absDiff'] as double).compareTo(a['absDiff'] as double));
+
+            return Stack(
+              children: order.map<Widget>((entry) {
+                final i = entry['i'] as int;
+                final anglePos = entry['anglePos'] as double;
+                final absDiff = entry['absDiff'] as double;
+
+                // Map absDiff (0..pi) -> t in 0..1 where 1 means fully centered
+                double t = (1.0 - (absDiff / pi)).clamp(0.0, 1.0);
+                t = Curves.easeOut.transform(t);
+
+                final double scale = 0.85 + (1.15 - 0.85) * t; // 0.85..1.15
+                final double opacity = 0.25 + (1.0 - 0.25) * t; // 0.25..1.0
+
+                final left = centerX + cos(anglePos) * radius - planetSize / 2;
+                final top = sunCenterY - sin(anglePos) * radius - planetSize / 2;
+
+                return Positioned(
+                  left: left,
+                  top: top,
+                  child: Opacity(
+                    opacity: opacity,
+                    child: Transform.scale(
+                      scale: scale,
+                      child: GestureDetector(
+                        onTap: () {
+                          if (i == selectedIndex) {
+                            _navigateToSelectedPage();
+                          } else {
+                            _animateToSelection(i);
+                          }
                         },
+                        child: Container(
+                          width: planetSize,
+                          height: planetSize,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.amber.withOpacity(0.5 * t + 0.1),
+                                blurRadius: 8 + 24 * t,
+                                spreadRadius: 1 + 2 * t,
+                              ),
+                            ],
+                          ),
+                          child: ClipOval(
+                            child: Image.asset(
+                              planets[i]['image']!,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    gradient: LinearGradient(
+                                      colors: [Colors.blue.shade300, Colors.blue.shade600],
+                                    ),
+                                  ),
+                                  child: const Icon(
+                                    Icons.public,
+                                    color: Colors.white,
+                                    size: 35,
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ),
+                );
+              }).toList(),
+            );
+          }(),
           // Arrows and selected planet at the top of the arc
           Positioned(
             top: 64 + 16,
