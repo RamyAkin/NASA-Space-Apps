@@ -40236,7 +40236,7 @@ $3(a,b,c){return B.al},
 $S:312}
 A.a_c.prototype={
 Ay(a,b){var s=t.N,r=A.ac(["query",a,"format",b],s,s)
-return A.eG("http://localhost:3001/tap/sync",0,null).U4(r)},
+return A.eG("https://nasaserver.onrender.com/tap/sync",0,null).U4(r)},
 xj(a,b){return this.agw(a,b)},
 agw(a,b){var s=0,r=A.P(t.sw),q,p=this,o,n,m
 var $async$xj=A.L(function(c,d){if(c===1)return A.M(d,r)

@@ -3,11 +3,39 @@
   "training_samples": 9564,
   "features_count": 4,
   "last_updated": "2025-10-05",
-  "total_predictions": 68,
-  "confirmed_predictions": 68,
+  "total_predictions": 70,
+  "confirmed_predictions": 70,
   "rejected_predictions": 0,
-  "total_confidence": 65.8720332980156,
+  "total_confidence": 67.8717343211174,
   "prediction_history": [
+    {
+      "timestamp": "2025-10-05T20:27:10.324Z",
+      "input": {
+        "period": "8.6893015e+00",
+        "duration": "22.5630000e+00",
+        "depth": "1.1170000e+03",
+        "ror": "2.9843001e-02"
+      },
+      "output": {
+        "prediction": 0,
+        "confidence": 0.9998505115509033
+      },
+      "confidence": 0.9998505115509033
+    },
+    {
+      "timestamp": "2025-10-05T20:24:32.441Z",
+      "input": {
+        "period": "8.6893015e+00",
+        "duration": "22.5630000e+00",
+        "depth": "1.1170000e+03",
+        "ror": "2.9843001e-02"
+      },
+      "output": {
+        "prediction": 0,
+        "confidence": 0.9998505115509033
+      },
+      "confidence": 0.9998505115509033
+    },
     {
       "timestamp": "2025-10-05T20:18:56.487Z",
       "input": {
@@ -962,7 +990,7 @@
     }
   ],
   "start_time": "2025-10-05T13:55:09.521Z",
-  "api_calls_today": 68,
+  "api_calls_today": 70,
   "last_reset": "Sun Oct 05 2025",
   "accuracy": 0.9523,
   "precision": 0.9341,
